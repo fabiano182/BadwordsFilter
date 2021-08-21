@@ -1,0 +1,24 @@
+{
+    "badwords":[
+    {
+        "badword": "pewdiepie", 
+        "id": "2"
+    }, 
+    {
+        "badword": "zoio", 
+        "id": "3"
+    }, 
+    {
+        "badword": "zangado", 
+        "id": "4"
+    }, 
+    {
+        "badword": "kefera", 
+        "id": "5"
+    }, 
+    {
+        "badword": "whindersson", 
+        "id": "6"
+    }
+]
+}
