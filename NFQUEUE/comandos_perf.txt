@@ -1,7 +1,7 @@
 CERTO:
 ######################################################################################################
 
-httperf --hog --server=10.0.2.17 --num-conns=500 --port=5000 --add-header="Content-Type: application/x-www-form-urlencoded\n" --wsesslog=100,0,session.txt --rate 1000 --timeout 5 --print-reply=body --session-cookie
+httperf --hog --server=192.168.100.10 --num-conns=500 --port=5000 --add-header="Content-Type: application/x-www-form-urlencoded\n" --wsesslog=100,0,session.txt --rate 1000 --timeout 5 --print-reply=body --session-cookie
 
 ######################################################################################################
 

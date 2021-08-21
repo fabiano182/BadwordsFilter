@@ -1,5 +1,5 @@
 export FLASK_APP=main.py
-flask run --host=10.0.2.16
+flask run --host=192.168.100.10
 
 httperf --server 10.0.2.16 --port 80 --method POST
 httperf --server 10.0.2.16 --port 80 --method POST --num-calls 10

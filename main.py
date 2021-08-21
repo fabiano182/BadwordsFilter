@@ -100,4 +100,4 @@ def returnOne(id):
     return jsonify({'badword' : bad_words[id].__dict__})
         
 if __name__ == '__main__':
-    app.run(debug=True)    
+    app.run(debug=True, host="192.168.100.10")    
