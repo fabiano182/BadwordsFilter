@@ -1,3 +1,4 @@
+import re
 from flask import Flask, url_for, render_template, request, redirect, url_for, jsonify
 import json
 from pprint import pprint
@@ -18,8 +19,8 @@ def load_badwords():
         data = json.load(f)
     for d in data['badwords']:
         b = Badword(d['badword'], d['id'])
+        #print(json.dumps(b.__dict__))
         bad_words.append(b)
-    # print(json.dumps(bad_words[0].__dict__))
 
 def save_file(d):
     with open('badwords.json', 'w') as outfile:
@@ -32,25 +33,27 @@ load_badwords()
 
 app = Flask(__name__)
 
+'''Homepage'''
 @app.route('/', methods=['POST', 'GET'])
-def index(bad_words = None):
-    return render_template('index.html')
+def index(bad_words = bad_words):
+    return render_template('index.html', bad_words=[bad_words[i].badword for i in range(len(bad_words))])
 
-@app.route('/submit_badword', methods=['POST', 'GET'])
-def submit_badword():
-    bid = int(bad_words[-1].id) + 1
-    bid = str(bid).encode("utf-8").decode("utf-8") 
-    badword = request.form['text']
-    b = Badword(badword, bid)
-    bad_words.append(b)
-    d = []
-    for b in bad_words:
-        d.append(b.__dict__)
-    return jsonify({'badwords': d})
+'''Texto do usuário'''
+@app.route('/submit', methods=['POST'])
+def submit(bad_words = bad_words):
+    bad = []
+    [bad.append(bad_words[i].badword) for i in range(len(bad_words))]
+    text = request.form['text']
+    matches = [x for x in bad if x in text]
 
+    if matches:
+        return 'Você digitou uma palavra proibida: {} '.format(matches)
+    else:
+        return f"Texto limpo: {text}"
+
+'''Painel Admin'''
 @app.route('/admin')
 def admin(bad_words = bad_words):
-    print(bad_words)
     return render_template('admin.html', bad_words=bad_words)
 
 @app.route('/admin', methods = ["POST"])
@@ -66,7 +69,32 @@ def addOne():
     save_file(d)
     return jsonify({'badwords': d})
 
+@app.route('/submit_badword', methods=['POST', 'GET'])
+def submit_badword():
+    bid = int(bad_words[-1].id) + 1
+    bid = str(bid).encode("utf-8").decode("utf-8") 
+    badword = request.form['text']
+    b = Badword(badword, bid)
+    bad_words.append(b)
+    d = []
+    for b in bad_words:
+        d.append(b.__dict__)
+    return jsonify({'badwords': d})
 
+'''Listar badwords'''
+@app.route('/badwords', methods = ["GET"])
+def returnAll():
+    d = []
+    for b in bad_words:
+        d.append(b.__dict__)
+    return jsonify({'badwords': d})
+
+@app.route('/badwords/<string:id>', methods=['GET'])
+def returnOne(id):
+    id = int(id)
+    return jsonify({'badword' : bad_words[id].__dict__})
+
+''' Deletar badwords'''
 @app.route('/delete/<int:id>', methods=['POST'])
 def remove(id):
     id = int(id)
@@ -84,20 +112,6 @@ def remove(id):
         d.append(b.__dict__)
     save_file(d)
     return jsonify({'badwords': d})
-
-
-
-@app.route('/badwords', methods = ["GET"])
-def returnAll():
-    d = []
-    for b in bad_words:
-        d.append(b.__dict__)
-    return jsonify({'badwords': d})
-
-@app.route('/badwords/<string:id>', methods=['GET'])
-def returnOne(id):
-    id = int(id)
-    return jsonify({'badword' : bad_words[id].__dict__})
         
 if __name__ == '__main__':
     app.run(debug=True, host="192.168.100.10")    

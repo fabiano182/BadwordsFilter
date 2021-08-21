@@ -18,15 +18,15 @@
     <div class="container">
         <div class="card">
             <p>Digite uma frase que contenha o nome do seu youtuber favorito!</p>
+            <form action="/submit" method="post">
+                <textarea type="text" id="textbox" name="text"></textarea>
+                <input type="submit" value="Enviar">
+            </form>
             {% if bad_words %}
                 <p><strong>Bad words:</strong> {{ bad_words }}</p>
             {% else %}
                 <p>Nenhuma badword adicionada.</p>
             {% endif %}
-            <form action="" method="post">
-                <textarea type="text" id="textbox" name="text"></textarea>
-                <input type="submit" value="Enviar">
-            </form>
         </div>
     </div>
 </body>
