@@ -1,1 +1,1 @@
-sudo iptables -I INPUT -d 192.168.100.10/24 -j NFQUEUE
+sudo iptables -I INPUT -d 192.168.100.5/24 -j NFQUEUE

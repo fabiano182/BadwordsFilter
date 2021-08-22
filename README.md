@@ -23,11 +23,24 @@ sudo pip3 install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 sudo apt install httperf
 ```
 
-
-## Rodando o Flask
-* Mude para a pasta do projeto
-* Execute as seguintes linhas no terminal:
+### Criando a interface de rede virtual para o server
 ```
-export FLASK_APP=main.py
-flask run
+sudo ifconfig enp0s3:0 192.168.100.10
+sudo ifconfig enp0s3:0 netmask 255.255.255.0
+```
+
+### Configurar o iptables
+```
+sudo iptables -I INPUT -d 192.168.100.5/24 -j NFQUEUE
+```
+
+### Iniciando o Scapy e NetFilterQueue
+```
+sudo python3 mitm.py
+```
+
+## Rodando a aplicação WEB (Flask)
+A aplicação deve ser executada na interface de rede virtual, lembre-se de alterar o host no script
+```
+python3 main.py
 ```
