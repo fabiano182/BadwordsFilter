@@ -7,17 +7,17 @@ import json
 post = "POST"
 
 def print_pacote(pkt):
-    print(IP(pkt.data()))
+    #print(IP(pkt.data()))
     #aux = "text="
-    #pacote = Ether(bytes(pkt.get_payload()))
-    #dados = str(pacote[Raw].load)
-    #print(str(dados).find('text='))
+    pacote = Ether(bytes(pkt.get_payload()))
+    dados = str(pacote[Raw].load)
+    print(str(dados).find('text='))
     #if pkt.haslayer(IP):
     #    print(pkt)
     #print("\n{} ----HTTP---->{}\n".format(pacote[IP].src, pacote[IP].dst))
     #index = dados.find('text=')
-    #if(index != -1):
-    #    print("Conteudo: {}".format(str(dados)[index:]))
+    if(index != -1):
+        print("Conteudo: {}".format(str(dados)[index:]))
 
 def find_badword(dados):
     with open('badwords.json') as data_file:
